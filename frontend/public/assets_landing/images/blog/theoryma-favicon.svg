@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="hexg" x1="6" y1="58" x2="58" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#56228f"/>
+      <stop offset="1" stop-color="#9b4fdd"/>
+    </linearGradient>
+  </defs>
+  <!-- hexagon badge -->
+  <polygon points="32,3 57,17.5 57,46.5 32,61 7,46.5 7,17.5"
+           fill="url(#hexg)" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round"/>
+  <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- node graph edges -->
+    <path d="M20 23 L37 15 M37 15 L48 25 M48 25 L45 46
+             M26 37 L37 15 M26 37 L48 25 M26 37 L45 46 M26 37 L20 23"/>
+    <!-- brain (blob) -->
+    <ellipse cx="26" cy="37" rx="11" ry="8.5"/>
+    <!-- gear -->
+    <circle cx="26" cy="37" r="4.6"/>
+    <circle cx="26" cy="37" r="1.7"/>
+    <path d="M26 30.6 V32.4 M26 41.6 V43.4 M19.6 37 H21.4 M30.6 37 H32.4
+             M21.4 32.4 L22.7 33.7 M29.3 40.3 L30.6 41.6
+             M30.6 32.4 L29.3 33.7 M22.7 40.3 L21.4 41.6"/>
+    <!-- nodes: diamond, triangle, circle, square -->
+    <polygon points="37,11 41,15 37,19 33,15"/>
+    <polygon points="20,19 24,26 16,26"/>
+    <circle cx="48" cy="25" r="3.8"/>
+    <rect x="41.5" y="42.5" width="7" height="7" rx="1"/>
+  </g>
+</svg>

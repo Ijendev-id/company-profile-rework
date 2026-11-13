@@ -1,0 +1,274 @@
+/*
+ * Gaya khusus halaman blog. Semua class berawalan "blog-" supaya tidak bentrok dengan CSS template.
+ * Warna aksen mengikuti warna biru yang dipakai di footer (#0061f2); ubah di :root kalau perlu.
+ */
+:root {
+  --blog-accent: #0061f2;
+  --blog-text: #1f2937;
+  --blog-muted: #6b7280;
+  --blog-border: #e5e7eb;
+}
+
+/* Banner judul: lebih ringkas dari hero landing page */
+.blog-hero.header-hero {
+  padding-bottom: 70px;
+}
+.blog-hero .header-title {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.3;
+}
+
+.blog-section {
+  padding: 60px 0 100px;
+}
+
+/* Filter kategori + pencarian */
+.blog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.blog-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.blog-categories a {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--blog-border);
+  border-radius: 999px;
+  color: var(--blog-text);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.blog-categories a:hover,
+.blog-categories a.active {
+  background: var(--blog-accent);
+  border-color: var(--blog-accent);
+  color: #fff;
+}
+
+.blog-search {
+  display: flex;
+  margin-left: auto;
+  border: 1px solid var(--blog-border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff;
+}
+.blog-search input {
+  border: 0;
+  outline: 0;
+  padding: 8px 16px;
+  min-width: 220px;
+  font-size: 14px;
+  background: transparent;
+}
+.blog-search button {
+  border: 0;
+  background: transparent;
+  padding: 0 16px;
+  color: var(--blog-muted);
+  cursor: pointer;
+}
+.blog-search button:hover {
+  color: var(--blog-accent);
+}
+
+/* Kartu artikel */
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  color: inherit;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+.blog-card-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #eef2f7;
+}
+.blog-card-cover--empty {
+  background: linear-gradient(135deg, #e8f0fe, #f5f7fb);
+}
+.blog-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+}
+.blog-card-category {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--blog-accent);
+}
+.blog-card-title {
+  margin: 8px 0 10px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--blog-text);
+}
+.blog-card:hover .blog-card-title {
+  color: var(--blog-accent);
+}
+.blog-card-excerpt {
+  margin: 0 0 16px;
+  color: var(--blog-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.blog-card-date {
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--blog-muted);
+}
+
+/* Pesan kosong / gagal memuat */
+.blog-state {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--blog-muted);
+}
+.blog-loading {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+/* Pagination mengikuti warna aksen */
+.blog-pagination .page-link {
+  color: var(--blog-accent);
+}
+.blog-pagination .page-item.active .page-link {
+  background: var(--blog-accent);
+  border-color: var(--blog-accent);
+  color: #fff;
+}
+
+/* Halaman baca artikel */
+.blog-article-cover {
+  display: block;
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+.blog-article-content {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--blog-text);
+  overflow-wrap: break-word;
+}
+.blog-article-content h2,
+.blog-article-content h3,
+.blog-article-content h4 {
+  margin: 1.8em 0 0.6em;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.blog-article-content h2 {
+  font-size: 28px;
+}
+.blog-article-content h3 {
+  font-size: 22px;
+}
+.blog-article-content p,
+.blog-article-content ul,
+.blog-article-content ol,
+.blog-article-content blockquote,
+.blog-article-content pre,
+.blog-article-content table {
+  margin: 0 0 1.2em;
+}
+.blog-article-content ul,
+.blog-article-content ol {
+  padding-left: 1.5em;
+}
+.blog-article-content ul {
+  list-style: disc;
+}
+.blog-article-content ol {
+  list-style: decimal;
+}
+.blog-article-content a {
+  color: var(--blog-accent);
+  text-decoration: underline;
+}
+.blog-article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+.blog-article-content blockquote {
+  padding: 4px 0 4px 20px;
+  border-left: 4px solid var(--blog-accent);
+  color: var(--blog-muted);
+}
+.blog-article-content code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f3f4f6;
+  font-size: 0.9em;
+}
+.blog-article-content pre {
+  padding: 16px;
+  border-radius: 8px;
+  background: #111827;
+  color: #e5e7eb;
+  overflow-x: auto;
+}
+.blog-article-content pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+.blog-article-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.blog-article-content th,
+.blog-article-content td {
+  padding: 8px 12px;
+  border: 1px solid var(--blog-border);
+}
+.blog-article-footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--blog-border);
+}
+
+@media (max-width: 575px) {
+  .blog-search,
+  .blog-search input {
+    width: 100%;
+  }
+}
