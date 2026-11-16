@@ -27,7 +27,7 @@ func Setup(cfg *config.Config, db *gorm.DB) *gin.Engine {
 	tokens := auth.NewTokenManager(cfg.JWTSecret, time.Duration(cfg.JWTExpiryHours)*time.Hour)
 
 	authHandler := handlers.NewAuthHandler(db, tokens)
-	postHandler := handlers.NewPostHandler(db)
+	postHandler := handlers.NewPostHandler(db, cfg.UploadDir)
 	categoryHandler := handlers.NewCategoryHandler(db)
 	uploadHandler := handlers.NewUploadHandler(cfg.UploadDir, cfg.MaxUploadMB)
 

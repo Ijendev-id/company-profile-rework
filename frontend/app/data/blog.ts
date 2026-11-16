@@ -1,7 +1,7 @@
 /** Teks dan pengaturan halaman blog. Ubah di sini, berlaku di semua halaman blog. */
 export const blog = {
   title: 'Blog',
-  subtitle: 'Cerita, tips, dan kabar terbaru dari Ijendev.id',
+  subtitle: 'Temukan wawasan, inspirasi, tips teknologi, dan informasi terbaru seputar dunia digital bersama IjenDev.id.',
 
   perPage: 9, // jumlah artikel per halaman di daftar
 

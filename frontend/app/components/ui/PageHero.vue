@@ -6,6 +6,9 @@ defineProps<{
   title: string
   subtitle?: string
 }>()
+
+// Efek gelembung yang sama dengan hero beranda.
+useParticles('particles-page')
 </script>
 
 <template>
@@ -20,5 +23,6 @@ defineProps<{
         </div>
       </div>
     </div>
+    <div id="particles-page" class="particles"></div>
   </div>
 </template>

@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"errors"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -8,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
+	"ijendev-backend/internal/media"
 	"ijendev-backend/internal/middleware"
 	"ijendev-backend/internal/models"
 )
@@ -16,11 +19,12 @@ const postSlugMax = 191
 
 // PostHandler menangani artikel blog (publik dan admin).
 type PostHandler struct {
-	db *gorm.DB
+	db        *gorm.DB
+	uploadDir string // folder file upload, untuk membersihkan gambar saat artikel dihapus
 }
 
-func NewPostHandler(db *gorm.DB) *PostHandler {
-	return &PostHandler{db: db}
+func NewPostHandler(db *gorm.DB, uploadDir string) *PostHandler {
+	return &PostHandler{db: db, uploadDir: uploadDir}
 }
 
 // ---- Bentuk data ----
@@ -295,14 +299,29 @@ func (h *PostHandler) Update(c *gin.Context) {
 }
 
 // Delete menjawab DELETE /api/v1/admin/posts/:id.
-// Artikel hanya ditandai terhapus (soft delete), datanya masih ada di database.
+// Artikel dihapus permanen dari database (tidak bisa dikembalikan). Unscoped() melewati soft delete.
+// Gambar sampul dan gambar di dalam isi artikel ikut dihapus dari folder uploads,
+// kecuali masih dipakai artikel lain.
 func (h *PostHandler) Delete(c *gin.Context) {
 	id, ok := parseID(c)
 	if !ok {
 		return
 	}
+	ctx := c.Request.Context()
 
-	result := h.db.WithContext(c.Request.Context()).Unscoped().Delete(&models.Post{}, id)
+	// Baca dulu gambar apa saja yang dipakai, karena setelah dihapus datanya hilang.
+	var post models.Post
+	err := h.db.WithContext(ctx).Unscoped().Select("id", "cover_image", "content").First(&post, id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		respondError(c, http.StatusNotFound, "artikel tidak ditemukan")
+		return
+	}
+	if err != nil {
+		serverError(c, err)
+		return
+	}
+
+	result := h.db.WithContext(ctx).Unscoped().Delete(&models.Post{}, id)
 	if result.Error != nil {
 		serverError(c, result.Error)
 		return
@@ -311,7 +330,30 @@ func (h *PostHandler) Delete(c *gin.Context) {
 		respondError(c, http.StatusNotFound, "artikel tidak ditemukan")
 		return
 	}
+
+	// Artikel sudah terhapus. Kegagalan membersihkan file tidak boleh membuat permintaan gagal.
+	h.removeUnusedUploads(c, media.ExtractNames(post.CoverImage, post.Content))
 	c.Status(http.StatusNoContent)
+}
+
+// removeUnusedUploads menghapus file upload yang tidak lagi disebut artikel mana pun.
+func (h *PostHandler) removeUnusedUploads(c *gin.Context, names []string) {
+	for _, name := range names {
+		var used int64
+		err := h.db.WithContext(c.Request.Context()).Unscoped().Model(&models.Post{}).
+			Where("cover_image LIKE ? OR content LIKE ?", "%/uploads/"+name+"%", "%/uploads/"+name+"%").
+			Count(&used).Error
+		if err != nil {
+			log.Printf("hapus gambar %s dilewati (gagal cek pemakaian): %v", name, err)
+			continue
+		}
+		if used > 0 {
+			continue // masih dipakai artikel lain
+		}
+		if err := media.Remove(h.uploadDir, name); err != nil {
+			log.Printf("gagal menghapus file %s: %v", name, err)
+		}
+	}
 }
 
 // ---- Bantuan ----

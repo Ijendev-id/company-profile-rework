@@ -10,9 +10,63 @@
 }
 
 /* Banner judul: lebih ringkas dari hero landing page */
-.blog-hero.header-hero {
-  padding-bottom: 70px;
+/* Selector dibuat lebih spesifik dari aturan template supaya tinggi minimum hero landing tidak ikut terbawa. */
+.header-area .blog-hero.header-hero {
+  position: relative;
+  min-height: 0;
+  height: auto;
+  padding-bottom: 150px;
+  /*
+   * Gambar latar landing page (banner-bg.svg) tinggi dan gelombang putihnya ada di bagian bawah.
+   * Banner blog pendek, jadi tanpa ini gambar terpotong dari tengah dan gelombang putih menutupi
+   * teks. Dikunci ke bagian atas gambar (biru penuh, sama dengan beranda).
+   * Warna biru = cadangan kalau gambar gagal dimuat.
+   */
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #2f5be0;
 }
+
+/* Gelombang di tepi bawah banner (biru muda lalu putih), mengikuti gaya gelombang di beranda. */
+.blog-hero.header-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: clamp(70px, 9vw, 130px);
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 130' preserveAspectRatio='none'%3E%3Cpath fill='%23e7eefc' d='M0 62C180 20 380 14 600 40S1030 98 1240 78C1330 69 1390 52 1440 34V130H0Z'/%3E%3Cpath fill='%23ffffff' d='M0 90C200 52 400 46 620 70S1040 118 1250 100C1340 92 1395 80 1440 66V130H0Z'/%3E%3C/svg%3E") center bottom / 100% 100% no-repeat;
+}
+
+/*
+ * Efek gelembung: melapis seluruh banner di belakang teks dan di luar aliran tata letak.
+ * Template menata partikel lewat id (#particles-1, #particles-2), jadi id baru ini perlu aturan sendiri.
+ * Tanpa ini kanvas jatuh di bawah teks dan ikut menentukan tinggi banner.
+ */
+.blog-hero .particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.blog-hero .particles canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Teks banner di atas gelombang */
+.blog-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
 .blog-hero .header-title {
   font-size: clamp(28px, 4vw, 44px);
   line-height: 1.3;
